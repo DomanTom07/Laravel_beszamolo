@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Perfume;
 
 class PerfumeController extends Controller
 {
@@ -10,7 +11,9 @@ class PerfumeController extends Controller
 
         $perfumes = Perfume::all();
 
-        return view( "/perfumes" );
+        return view( "perfumes", [
+            "perfumes" => $perfumes
+        ]);
     }
 
     public function newPerfume() {
@@ -19,6 +22,15 @@ class PerfumeController extends Controller
     }
 
     public function storePerfume( Request $request ) {
+        $formFields = $request->validate([
+            "name" => "required",
+            "type" => "required",
+            "price" => "required"
+        ], [
+            "name.required" => "Töltse ki a név mezőt!",
+            "type.required" => "Töltse ki a típus mezőt!",
+            "price.required" => "Töltse ki az ár mezőt!"
+        ]);
 
         $perfume = new Perfume;
 
@@ -28,7 +40,7 @@ class PerfumeController extends Controller
 
         $perfume->save();
 
-        return redirect( "/new-perfume" );
+        return redirect("/");
     }
 
     public function editPerfume( $id ) {
@@ -41,7 +53,13 @@ class PerfumeController extends Controller
     }
 
     public function updatePerfume( Request $request ) {
+        $perfume = Perfume::where("id",$request->id)->first();
+        $perfume->name = $request->name;
+        $perfume->type = $request->type;
+        $perfume->price = $request->price;
 
+        $perfume->save();
+        return redirect("/");
     }
 
     public function deletePerfume( $id ) {
@@ -49,6 +67,6 @@ class PerfumeController extends Controller
         $perfume = Perfume::find( $id );
         $perfume->delete();
 
-        return redirect( "/perfumes" );
+        return redirect("/");
     }
 }

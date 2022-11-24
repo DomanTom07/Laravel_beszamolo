@@ -1,5 +1,7 @@
 @extends( "layouts.master" )
 
+<h1>Szerkesztés</h1>
+
 @section( "content" )
 
 @if( $errors->any() )

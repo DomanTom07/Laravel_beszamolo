@@ -2,6 +2,8 @@
 
 @section( "content" )
 
+<h1>Termékek</h1>
+
 <a href="/new-perfume"><button>Új termék</button></a>
 
 <table>
